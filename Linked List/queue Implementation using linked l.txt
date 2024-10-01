@@ -1,0 +1,92 @@
+queue Implementation using linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* link; 
+};
+
+struct Queue {
+    struct Node* front;
+    struct Node* rear;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->link = NULL; 
+    return newNode;
+}
+
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = NULL;
+    queue->rear = NULL;
+    return queue;
+}
+
+void enqueue(struct Queue* queue, int data) {
+    struct Node* newNode = createNode(data);
+    if (queue->rear == NULL) {
+        queue->front = newNode;
+        queue->rear = newNode;
+        return;
+    }
+    queue->rear->link = newNode; 
+    queue->rear = newNode;
+}
+
+int dequeue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        printf("Queue is empty.\n");
+        return -1;
+    }
+    struct Node* temp = queue->front;
+    int data = temp->data;
+    queue->front = queue->front->link;
+
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    free(temp);
+    return data;
+}
+
+void displayQueue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    struct Node* temp = queue->front;
+    printf("Queue contents: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->link;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Queue* queue = createQueue();
+
+    enqueue(queue, 10);
+    enqueue(queue, 20);
+    enqueue(queue, 30);
+
+    displayQueue(queue);
+
+    printf("Dequeued: %d\n", dequeue(queue));
+    displayQueue(queue);
+
+    printf("Dequeued: %d\n", dequeue(queue));
+    displayQueue(queue);
+
+    printf("Dequeued: %d\n", dequeue(queue));
+    displayQueue(queue);
+
+    printf("Dequeued: %d\n", dequeue(queue)); 
+    free(queue);
+    return 0;
+}

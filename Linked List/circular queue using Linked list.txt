@@ -1,0 +1,99 @@
+circular queue using Linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* link;
+};
+
+struct CircularQueue {
+    struct Node* front;
+    struct Node* rear;
+};
+
+struct Node* createNode(int data) {
+    struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = data;
+    head->link = NULL;
+    return head;
+}
+
+struct CircularQueue* createQueue() {
+    struct CircularQueue* queue = (struct CircularQueue*)malloc(sizeof(struct CircularQueue));
+    queue->front = NULL;
+    queue->rear = NULL;
+    return queue;
+}
+
+int isEmpty(struct CircularQueue* queue) {
+    return (queue->front == NULL);
+}
+
+void enqueue(struct CircularQueue* queue, int data) {
+    struct Node* head = createNode(data);
+    if (isEmpty(queue)) {
+        queue->front = head;
+        queue->rear = head;
+        head->link = head;
+    } else {
+        queue->rear->link = head;
+        queue->rear = head;
+        queue->rear->link = queue->front;
+    }
+}
+
+int dequeue(struct CircularQueue* queue) {
+    if (isEmpty(queue)) {
+        printf("Queue is empty!\n");
+        return -1;
+    }
+    struct Node* temp = queue->front;
+    int data = temp->data;
+
+    if (queue->front == queue->rear) {
+        queue->front = NULL;
+        queue->rear = NULL;
+    } else {
+        queue->front = queue->front->link;
+        queue->rear->link = queue->front;
+    }
+    
+    free(temp);
+    return data;
+}
+
+void displayQueue(struct CircularQueue* queue) {
+    if (isEmpty(queue)) {
+        printf("Queue is empty!\n");
+        return;
+    }
+
+    struct Node* temp = queue->front;
+    printf("Circular Queue: ");
+    do {
+        printf("%d -> ", temp->data);
+        temp = temp->link;
+    } while (temp != queue->front);
+    printf("(back to front)\n");
+}
+
+int main() {
+    struct CircularQueue* queue = createQueue();
+
+    enqueue(queue, 10);
+    enqueue(queue, 20);
+    enqueue(queue, 30);
+    displayQueue(queue);
+
+    printf("Dequeued: %d\n", dequeue(queue));
+    displayQueue(queue);
+
+    printf("Dequeued: %d\n", dequeue(queue));
+    displayQueue(queue); 
+
+    printf("Dequeued: %d\n", dequeue(queue));
+    displayQueue(queue); 
+    return 0;
+}
