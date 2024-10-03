@@ -1,0 +1,40 @@
+Given a sorted array arr=[3, 6, 9, 12, 15, 18, 21], write a c program to search for the number 15 using binary search.
+
+#include <stdio.h>
+
+int binarySearch(int arr[], int size, int num) {
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (arr[mid] == num) {
+            return mid;
+        }
+        else if (arr[mid] < num) {
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    int arr[] = {3, 6, 9, 12, 15, 18, 21};
+    int size = 7;
+    int num = 13;
+
+    int result = binarySearch(arr, size, num);
+
+    if (result != -1) {
+        printf("Element is found at index %d\n", result);
+    } else {
+        printf("Element is not found in the array\n");
+    }
+
+    return 0;
+}
