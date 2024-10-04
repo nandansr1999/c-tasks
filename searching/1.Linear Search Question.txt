@@ -1,0 +1,35 @@
+1.Linear Search Question
+
+#include <stdio.h>
+
+int main() {
+    int n, i, search, found = -1;
+
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter %d integers:\n", n);
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Enter the integer to search for: ");
+    scanf("%d", &search);
+
+    for (i = 0; i < n; i++) {
+        if (arr[i] == search) {
+            found = i; 
+            break;
+        }
+    }
+
+    if (found != -1) {
+        printf("Element found at index: %d\n", found);
+    } else {
+        printf("Element not found\n");
+    }
+
+    return 0;
+}
